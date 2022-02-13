@@ -73,12 +73,12 @@ text = """מרגלית דהן
 
 doc = nlp(text)
 for entity in doc.ents:
-    print(f"{entity.text} \t {entity.label_} ({entity.start_char},{entity.end_char})")
+    print(f"{entity.text} \t {entity.label_}: {entity._.confidence_score:.4f} ({entity.start_char},{entity.end_char})")
 
->>> מרגלית דהן  PERS (0,10)
->>> 2/12/2001   DATE (33,42)
->>> מ18.11.2001 DATE (54,65)
->>> 8%  PERCENT (230,232)
+>>> מרגלית דהן	 PERS: 0.9999 (0,10)
+>>> 2/12/2001 	 DATE: 0.9897 (33,42)
+>>> מ18.11.2001 	 DATE: 0.8282 (54,65)
+>>> 8% 	 PERCENT: 0.9932 (230,232)
 
 ```
 ## NER Model

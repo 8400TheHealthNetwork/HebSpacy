@@ -14,4 +14,4 @@ text = """מרגלית דהן
 
 doc = nlp(text)
 for entity in doc.ents:
-    print(f"{entity.text} \t {entity.label_} ({entity.start_char},{entity.end_char})")
+    print(f"{entity.text} \t {entity.label_}: {entity._.confidence_score:.4f} ({entity.start_char},{entity.end_char})")
