@@ -6,12 +6,10 @@ from spacy.lang.xx import MultiLanguage
 from thinc.config import Config
 import argparse
 
-def create_pipeline():
-    # before running the script run in terminal:
-    # cd heb_spacy
-    # python setup.py develop
-    input_dir = Path(r"C:\Users\dakarmon\projects\HebSpacy\resources")
-    target_dir = Path("pipeline")
+
+def package(resource_dir: str, output_dir: str):
+    input_dir = Path(resource_dir)
+    target_dir = Path(output_dir)
 
     if target_dir.exists():
         shutil.rmtree(target_dir)
@@ -22,26 +20,23 @@ def create_pipeline():
     with open("meta.json", "r") as f:
         meta = json.load(f)
     nlp.meta.update(meta)
+    nlp.lang = "he"
 
     # Add sentence segmentation
     nlp.add_pipe("sentencizer")
 
     # Add transformer
-    config = Config().from_disk(input_dir / "transformer.cfg")
+    config = Config().from_disk("transformer.cfg")
     transformer_config = config["transformer"]
     transformer_config["model"]["name"] = str(input_dir)
     transformer = nlp.add_pipe("transformer", config=config["transformer"])
     transformer.model.initialize()
 
-    # Add BMC head
-    bmc = nlp.add_pipe("ner_head", name="bmc", last=True)
-    bmc.load(input_dir)
-    os.mkdir(target_dir / "bmc")
-
-    # Add NEMO head
-    nemo = nlp.add_pipe("ner_head", name="nemo", last=True)
-    nemo.load(input_dir)
-    os.mkdir(target_dir / "nemo")
+    # Add ner heads
+    for ner_head in input_dir.glob("ner_*.bin"):
+        pipe = nlp.add_pipe("ner_head", name=ner_head.stem, last=True)
+        pipe.load(input_dir)
+        os.mkdir(target_dir / ner_head.stem)
 
     # Add consolidator
     nlp.add_pipe("consolidator", last=True)
@@ -50,8 +45,11 @@ def create_pipeline():
 
 
 if __name__ == '__main__':
+    # make sure to run `python setup.py develop` before running this script
     parser = argparse.ArgumentParser()
-    parser.add_argument('resources_dir', type=str, required=True, dest="path to the directory containing the weights and configuration files")
+    parser.add_argument('resources_dir', help="directory containing the weights and configuration files")
+    parser.add_argument('output_dir', default=".", help="pipeline output directory")
+
     args = parser.parse_args()
 
-    create_pipeline()
+    create_pipeline(args.resources_dir, args.output_dir)
