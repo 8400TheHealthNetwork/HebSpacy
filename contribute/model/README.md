@@ -1,7 +1,7 @@
 # Contribute your own `hebspacy` model
 Your are welcome to contribute by training and packaging your own `hebspacy` model. Please follow the instructions below to enable seamless loading process
 
-## Train model
+## Model Training
 You may choose the training codebase that best fits your requirements as long as you save the following files:
 1. The pretrained transformer layers (post-fine tuning) **separately** from the NER heads. file should be named `pytorch_model.bin`
 2. All the files required to be loaded by `transformers.AutoModel`, including the standard `config.json`, `special_tokens.json`, `tokenizer_config.json`, `vocab.txt`.
@@ -56,7 +56,7 @@ Here is an example of the index to class mapping `json` file for `ner_bmc`:
 }
 ````
 
-## Package model
+## Model Packaging
 Once you have prepared all the directory with all required files, please follow these steps:
 1. Fork this repo (in case you haven't already)
 2. Make sure that `spacy` is installed in your running python environment (**make sure it is the same version as mentioned in requirements.txt**) 
