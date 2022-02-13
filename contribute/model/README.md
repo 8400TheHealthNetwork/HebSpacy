@@ -1,5 +1,5 @@
 # Contribute your own `hebspacy` model
-Your are welcome to contribute by training and packaging your own `hebspacy` model. Please follow the instructions below to enable seamless loading process
+You are welcome to contribute by training and packaging your own `hebspacy` model. Please follow the instructions below to enable seamless loading process.
 
 ## Model Training
 You may choose the training codebase that best fits your requirements as long as you save the following files:
