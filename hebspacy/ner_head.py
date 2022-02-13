@@ -2,9 +2,10 @@ import inspect
 import json
 from collections import defaultdict
 
+import numpy as np
 import torch
 from spacy import Language
-from spacy.tokens import Doc
+from spacy.tokens import Doc, Span
 from spacy.training import iob_to_biluo, biluo_tags_to_spans
 from torch.nn import functional as funct
 
@@ -14,6 +15,8 @@ class NERHead:
     def __init__(self, nlp: Language, name: str):
         self.name = name
         Doc.set_extension(f"{name}_ents", default=None, force=True)
+        Span.set_extension("confidence_score", default=1.0, force=True)
+
 
     def load(self, dir_path: str):
         self.model = torch.load(f"{dir_path}/{self.name}.bin")
@@ -22,6 +25,7 @@ class NERHead:
 
     def __call__(self, doc):
         tokens_pred = []
+        probs_pred = []
         # sequence length is defined by the longest sentence (shorter sentences are padded sentences)
         seq_size = len(doc._.trf_data.wordpieces.strings[-1])
 
@@ -46,31 +50,25 @@ class NERHead:
                 # calculate the logits
                 logits = funct.linear(concatenated_vector, self.model["weight"], self.model["bias"])
 
-                # covert to probabilities
                 pred = torch.argmax(logits).numpy().tolist()
+
+                # calculate probabilities and save the score for the top class
+                prob = torch.softmax(torch.FloatTensor(logits), dim=-1)
+                probs_pred.append(prob[pred].tolist())
+
                 if pred == 0:
                     pred = 1
             else:
                 pred = 1
+                probs_pred.append(1)
             tokens_pred.append(self.idx_to_tag[str(pred)])
-
-            # TODO: calculate confidence score
-            # prob = torch.softmax(torch.FloatTensor(logits), dim=-1)
-            # b_indices = 2 * torch.LongTensor(range(len(self.idx_to_tag_mapping.keys()) // 2))
-            # i_indices = b_indices + 1
-            #
-            # # assuming that B-class is followed by I-class (and that <PAD> and O should be merged)
-            # merged_prob = prob[:, :, b_indices] + prob[:, :, i_indices]
-            # sum_tokens = torch.sum(merged_prob, dim=2)
-            # # normalize results
-            # confidence_score = merged_prob / sum_tokens.view([merged_prob.shape[0], merged_prob.shape[1], 1])
-            #
-            # confidence_scores, _ = torch.max(confidence_score, dim=2)
-            #
-            # scores = confidence_scores.numpy().tolist()
         biluo_tags = iob_to_biluo(tokens_pred)
         spans = biluo_tags_to_spans(doc, biluo_tags)
-        doc = self.set_extension(doc, spans)
+
+        # entity confidence score is the average score across the corresponding tokens
+        for span in spans:
+            span._.confidence_score = np.average(probs_pred[span.start:span.end])
+        doc = self.set_entities(doc, spans)
 
         return doc
 
@@ -91,7 +89,7 @@ class NERHead:
             self.idx_to_tag = json.load(f)
         return self
 
-    def set_extension(self, doc, spans):
+    def set_entities(self, doc, spans):
         setattr(doc._, f"{self.name}_ents", spans)
         return doc
 

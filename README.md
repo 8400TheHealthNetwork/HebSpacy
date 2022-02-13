@@ -1,8 +1,9 @@
 # HebSpaCy
 
-This repository contains custom spaCy pipes and models for Hebrew text, including a NER model.
+HebSpaCy is a custom spaCy pipeline for Hebrew text and includes a NER model.
+The base model (i.e., `he_ner_news_trf` is trained on AlephBert, NEMO and BMC and provides recognition of 16 entity types, including `GPE`, `PER`, `LOC` and `ORG`.
 
-## Installation
+## Getting Started
 1. Installing the `hebspacy` library and installing the model:
 ```bash
 pip install hebspacy
@@ -15,7 +16,6 @@ pip install </path/to/download>
 
 Note: We strongly recommend that you use an isolated Python environment to install hebspacy.
 Additionally, hebspacy works best for **Python 3.8 or greater**.
-
 
 #### Setting up a virtual environment
 
@@ -98,8 +98,8 @@ Nevertheless, the recognized entities by each head can be accessed in the spacy 
 
 
 ## Contribution
-* To contribute to pipeline codebase, please follow the instructions [here](contribute/pipeline/README.md).
-* To contribute and package your own model, please follow the instructions [here](contribute/model/README.md).
+You are welcome by contributing to `hebspacy` codebase pipeline and/or introducing new models. 
+Kindly follow the [pipeline codebase instructions](contribute/pipeline/README.md) and the [model training and packaging guidelines](contribute/model/README.md).
 
 
 -----
