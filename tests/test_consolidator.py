@@ -3,6 +3,9 @@ from spacy.tokens import Doc, Span
 
 
 def test_consolidator_with_single_head(he_vocab):
+    """
+    Checks that ner head entities are populated to ents property post consolidation
+    """
     mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
     new_head = NERHead(nlp=None, name="test")
     entities = [Span(mock_doc, 0, 1, label="PERSON"), Span(mock_doc, 1, 2, label="LOC")]
@@ -16,6 +19,9 @@ def test_consolidator_with_single_head(he_vocab):
 
 
 def test_consolidator_with_multiple_heads_ent_contained_in_ent(he_vocab):
+    """
+    Checks that in case of entity conflict, the consolidator prefers the longer term (assuming they share the same index)
+    """
     mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
 
     new_head = NERHead(nlp=None, name="test")
@@ -35,6 +41,9 @@ def test_consolidator_with_multiple_heads_ent_contained_in_ent(he_vocab):
 
 
 def test_consolidator_with_multiple_heads_ents_conflicts(he_vocab):
+    """
+    Checks that in case of entity conflict/paritial overlap, the consolidator prefers position
+    """
     mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף", "8"])
 
     new_head = NERHead(nlp=None, name="test")

@@ -17,15 +17,22 @@ def remove_extensions():
     for name in doc_extension_names:
         Underscore.doc_extensions.pop(name)
 
+
 def test_span_confidence_score_extension_added(he_vocab):
+    """
+    Check that confidence_score extension is available
+    """
+
     new_head = NERHead(nlp=None, name="test")
     mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
-    span = Span(mock_doc, 0, 1, label="PERSON")
 
     assert Span.has_extension("confidence_score")
 
 
 def test_confidence_score(he_vocab):
+    """
+    Check that confidence_score works is properly set
+    """
     new_head = NERHead(nlp=None, name="test")
     mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
     span = Span(mock_doc, 0, 1, label="PERSON")
@@ -38,6 +45,9 @@ def test_confidence_score(he_vocab):
 
 
 def test_create_new_head_and_set_entities(he_vocab):
+    """
+    Check that creating a new head generates a corresponding extension with the entities
+    """
     new_head = NERHead(nlp=None, name="test")
     mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
     entities = [Span(mock_doc, 0, 1, label="PERSON"), Span(mock_doc, 1, 2, label="LOC")]
