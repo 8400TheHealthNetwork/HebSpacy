@@ -52,4 +52,4 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    create_pipeline(args.resources_dir, args.output_dir)
+    package(args.resources_dir, args.output_dir)
