@@ -1,4 +1,4 @@
-# HebSpaCy - Custom spaCy pipeline for Hebrew text
+# HebSpaCy - custom spaCy pipeline for Hebrew text
 **NLP  spaCy pipeline for Hebrew text that includes a transformer-based multitask NER model.**
 
 The available NER model was trained on AlephBert, NEMO and BMC and recognizes 16 entity types in Hebrew, including `GPE`, `PER`, `LOC` and `ORG`.
