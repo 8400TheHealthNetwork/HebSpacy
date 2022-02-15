@@ -32,7 +32,7 @@ doc = nlp("גדעון לבנה הגיע היום לבית החולים שערי 
 ## Available Models
 | Model | Description | Install URL |
 | ----- | ----------- | ----------- |
-| he_ner_news_trf | A full spaCy pipeline for Hebrew text including a multitask NER model trained against the BMC and NEMO corpora| [Download](https://github.com/dkarmon/models/releases/download/he_ner_news_trf-3.2.1/he_ner_news_trf-3.2.1-py3-none-any.whl)
+| he_ner_news_trf | A full spaCy pipeline for Hebrew text including a multitask NER model trained against the BMC and NEMO corpora| [Download](https://github.com/dkarmon/HebSpacy/releases/download/he_ner_news_trf-3.2.1/he_ner_news_trf-3.2.1-py3-none-any.whl)
 
 
 #### Example Usage
