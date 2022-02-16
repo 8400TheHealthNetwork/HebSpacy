@@ -1,6 +1,6 @@
 sentencepiece==0.1.96
 spacy==3.2.2
-spacy-transformers==1.1.4
-tokenizers==0.9.4
-transformers==4.2.2
-torch==1.7.1
+spacy-transformers
+tokenizers
+transformers
+torch
