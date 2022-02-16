@@ -24,7 +24,7 @@ pip install </path/to/download>
 #### Available Models
 | Model | Description | Install URL |
 | ----- | ----------- | ----------- |
-| he_ner_news_trf | A full spaCy pipeline for Hebrew text including a multitask NER model trained against the BMC and NEMO corpora. Read more [here](#he_ner_news_trf).| [Download](https://github.com/dkarmon/HebSpacy/releases/download/he_ner_news_trf-3.2.1/he_ner_news_trf-3.2.1-py3-none-any.whl)
+| he_ner_news_trf | A full spaCy pipeline for Hebrew text including a multitask NER model trained against the BMC and NEMO corpora. Read more [here](#he_ner_news_trf).| [Download](https://github.com/8400TheHealthNetwork/HebSpacy/releases/download/he_ner_news_trf-3.2.1/he_ner_news_trf-3.2.1-py3-none-any.whl)
 
 
 ## Getting started
