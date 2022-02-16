@@ -17,7 +17,7 @@ conda activate hebsafeharbor
 # Install hebspacy
 pip install hebspacy
 
-# Download and install the model (e.g., he_ner_news_trf)
+# Download and install the model (see below availbable models)
 pip install </path/to/download>
 ```
 
