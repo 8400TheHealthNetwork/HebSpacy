@@ -4,6 +4,7 @@ from os import path
 from setuptools import setup, find_packages
 
 this_directory = path.abspath(path.dirname(__file__))
+parent_directory = os.path.abspath(os.path.join(this_directory, os.pardir))
 
 VERSION = {}
 with open(f"{this_directory}/hebspacy/version.py", "r") as version_file:
@@ -39,7 +40,7 @@ install_requires_ = get_requirements_from_files('requirements.txt')
 for requirement in install_requires_:
     print("adding requirement: " + requirement)
 
-with open(path.join(this_directory, "README.MD"), encoding="utf-8") as f:
+with open(path.join(parent_directory, "README.MD"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
