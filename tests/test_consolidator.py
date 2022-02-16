@@ -1,3 +1,5 @@
+import pytest
+
 from hebspacy.ner_head import NERHead, consolidator
 from spacy.tokens import Doc, Span
 
@@ -60,3 +62,39 @@ def test_consolidator_with_multiple_heads_ents_conflicts(he_vocab):
     assert len(doc.ents) == 2
     assert doc.ents[0].start == entities_test[0].start and doc.ents[0].end == entities_test[0].end
     assert doc.ents[1].start == entities_test[1].start and doc.ents[1].end == entities_test[1].end
+
+
+def test_consolidator_with_no_heads(he_vocab):
+    """
+    make sure consolidator doesn't crash in case there are no ner heads
+    """
+    mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
+    try:
+        doc = consolidator(mock_doc)
+    except Exception as e:
+        pytest.fail("Unexpected error", str(e))
+
+
+def test_consolidator_with_head_not_initialized(he_vocab):
+    """
+    make sure consolidator doesn't crash in case ner heads weren't initialized
+    """
+    mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
+    new_head = NERHead(nlp=None, name="test")
+    try:
+        doc = consolidator(mock_doc)
+    except IndexError as e:
+        pytest.fail("Unexpected Index error", str(e))
+
+
+def test_consolidator_with_head_no_entities(he_vocab):
+    """
+    make sure consolidator doesn't crash in case no entities were detected
+    """
+    mock_doc = Doc(he_vocab, words=["שלום", "כיתה", "אלף"])
+    new_head = NERHead(nlp=None, name="test")
+    new_head.set_entities(mock_doc, [])
+    try:
+        doc = consolidator(mock_doc)
+    except IndexError as e:
+        pytest.fail("Unexpected Index error", str(e))
