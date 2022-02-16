@@ -108,33 +108,35 @@ def consolidator(doc):
 
     # map start index to entities
     for name, entities in extensions:
-        for entity in entities:
-            start_to_entities[entity.start].append(entity)
+        if entities:
+            for entity in entities:
+                start_to_entities[entity.start].append(entity)
 
     # iterate over the starting position and select the longest entity
     start_positions = sorted(list(start_to_entities.keys()))
-    max_index = start_positions[-1]
-    index = 0
-    while start_positions[index] <= max_index:
-        start_index = start_positions[index]
-        entities = start_to_entities[start_index]
+    if len(start_positions) > 0:
+        max_index = start_positions[-1]
+        index = 0
+        while start_positions[index] <= max_index:
+            start_index = start_positions[index]
+            entities = start_to_entities[start_index]
 
-        # find the longest entity
-        ent_lens = list(map(lambda ent: len(ent), entities))
-        max_value = max(ent_lens)
-        arg_max = ent_lens.index(max_value)
+            # find the longest entity
+            ent_lens = list(map(lambda ent: len(ent), entities))
+            max_value = max(ent_lens)
+            arg_max = ent_lens.index(max_value)
 
-        # select that entity
-        target_entity = entities[arg_max]
-        ents.append(target_entity)
+            # select that entity
+            target_entity = entities[arg_max]
+            ents.append(target_entity)
 
-        # find the next index to investigate
-        min_target_index = start_index + len(target_entity)
-        if max_index < min_target_index:
-            break
-        while start_positions[index] < min_target_index:
-            index += 1
+            # find the next index to investigate
+            min_target_index = start_index + len(target_entity)
+            if max_index < min_target_index:
+                break
+            while start_positions[index] < min_target_index:
+                index += 1
 
-    doc.set_ents(ents)
+        doc.set_ents(ents)
     return doc
 
