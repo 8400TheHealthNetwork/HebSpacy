@@ -113,18 +113,18 @@ def consolidator(doc):
                 start_to_entities[entity.start].append(entity)
 
     # iterate over the starting position and select the longest entity
-    start_positions = sorted(list(start_to_entities.keys()))
-    if len(start_positions) > 0:
-        max_index = start_positions[-1]
+    entities_start_positions = sorted(list(start_to_entities.keys()))
+    if len(entities_start_positions) > 0:
+        max_index = entities_start_positions[-1]
         index = 0
-        while start_positions[index] <= max_index:
-            start_index = start_positions[index]
+        while entities_start_positions[index] <= max_index:
+            start_index = entities_start_positions[index]
             entities = start_to_entities[start_index]
 
             # find the longest entity
-            ent_lens = list(map(lambda ent: len(ent), entities))
-            max_value = max(ent_lens)
-            arg_max = ent_lens.index(max_value)
+            ent_lens = [len(ent) for ent in entities]
+            max_len = max(ent_lens)
+            arg_max = ent_lens.index(max_len)
 
             # select that entity
             target_entity = entities[arg_max]
@@ -134,7 +134,7 @@ def consolidator(doc):
             min_target_index = start_index + len(target_entity)
             if max_index < min_target_index:
                 break
-            while start_positions[index] < min_target_index:
+            while entities_start_positions[index] < min_target_index:
                 index += 1
 
         doc.set_ents(ents)
