@@ -1,0 +1,10 @@
+{
+  "lang": "he",
+  "name": "ner_news_trf",
+  "version": "3.2.1",
+  "description": "Hebrew pipeline. Components: tok2vec, senter, multihead ner (bmc and nemo).",
+  "author": "hebpsacy",
+  "email": "hebspacy@gmail.com",
+  "url": "https://github.com/8400TheHealthNetwork/HebSpacy",
+  "license": "MIT License (MIT)"
+}
