@@ -29,9 +29,9 @@ pip install </path/to/download>
 
 ## Getting started
 ```python
-import spacy
+from spacy import load
 
-nlp = spacy.load("he_ner_news_trf")
+nlp = load("he_ner_news_trf")
 text = """מרגלית דהן
 מספר זהות 11278904-5
 
