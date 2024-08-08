@@ -3,6 +3,7 @@ import json
 from collections import defaultdict
 
 import numpy as np
+import cupy as cp
 import torch
 from spacy import Language
 from spacy.tokens import Doc, Span
@@ -39,10 +40,16 @@ class NERHead:
                 item = wp_index % seq_size
 
                 # retrieving the vectors of the token's head word piece from the last 4 layers
-                layer_9 = torch.from_numpy(doc._.trf_data.tensors[2][8][batch][item])
-                layer_10 = torch.from_numpy(doc._.trf_data.tensors[2][9][batch][item])
-                layer_11 = torch.from_numpy(doc._.trf_data.tensors[2][10][batch][item])
-                layer_12 = torch.from_numpy(doc._.trf_data.tensors[2][11][batch][item])
+                if isinstance(doc._.trf_data.tensors[2][8][batch][item], cp.ndarray):
+                    layer_9 = torch.from_numpy(cp.asnumpy(doc._.trf_data.tensors[2][8][batch][item]))
+                    layer_10 = torch.from_numpy(cp.asnumpy(doc._.trf_data.tensors[2][9][batch][item]))
+                    layer_11 = torch.from_numpy(cp.asnumpy(doc._.trf_data.tensors[2][10][batch][item]))
+                    layer_12 = torch.from_numpy(cp.asnumpy(doc._.trf_data.tensors[2][11][batch][item]))
+                else:
+                    layer_9 = torch.from_numpy(doc._.trf_data.tensors[2][8][batch][item])
+                    layer_10 = torch.from_numpy(doc._.trf_data.tensors[2][9][batch][item])
+                    layer_11 = torch.from_numpy(doc._.trf_data.tensors[2][10][batch][item])
+                    layer_12 = torch.from_numpy(doc._.trf_data.tensors[2][11][batch][item])
 
                 # concat the vectors into one
                 concatenated_vector = torch.cat([layer_9, layer_10, layer_11, layer_12])
